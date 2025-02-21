@@ -1,0 +1,62 @@
+name: Deploy to AWS Elastic Beanstalk
+
+on:
+  push:
+    branches:
+      - main  # Deploy only when pushing to the main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: Checkout the code
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      # Step 2: Set up JDK (You can use Corretto or Temurin based on your preference)
+      - name: Set Up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'  # You chose 'corretto', so we keep this
+          java-version: '17'
+
+      # Step 3: Build with Maven
+      - name: Build with Maven
+        run: mvn clean package -DskipTests  # Skipping tests for faster build (optional)
+
+      - name: Set up AWS CLI
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Deploy to AWS Elastic Beanstalk
+        run: |
+          # Find and move the application JAR file
+          jar_file=$(ls target/*.jar | head -n 1)
+          echo "Found JAR file: $jar_file"
+          
+          # Ensure the JAR is at the root level
+          cp "$jar_file" application.jar
+          
+          # Zip the application JAR file
+          zip -r deploy.zip application.jar
+          
+          # Upload application version to Elastic Beanstalk S3 bucket
+          aws s3 cp deploy.zip s3://racedays-api/deploy.zip
+          
+          # Create a new Elastic Beanstalk application version
+          aws elasticbeanstalk create-application-version \
+          --application-name racedays-api \
+          --version-label v${{ github.run_number }} \
+          --source-bundle S3Bucket="racedays-api",S3Key="deploy.zip" \
+          --region us-east-1
+          
+          # Update the environment to use the newly created version
+          aws elasticbeanstalk update-environment \
+          --application-name racedays-api \
+          --environment-name racedays-api-env \
+          --version-label v${{ github.run_number }} \
+          --region us-east-1
