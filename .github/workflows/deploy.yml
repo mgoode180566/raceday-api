@@ -3,7 +3,7 @@ name: Deploy raceday-api to AWS Elastic Beanstalk
 on:
   push:
     branches:
-      - main  # Deploy only when pushing to the main branch
+      - master  # Deploy only when pushing to the main branch
 
 jobs:
   deploy:
