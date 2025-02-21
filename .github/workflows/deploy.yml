@@ -1,4 +1,4 @@
-name: Deploy to AWS Elastic Beanstalk
+name: Deploy raceday-api to AWS Elastic Beanstalk
 
 on:
   push:
