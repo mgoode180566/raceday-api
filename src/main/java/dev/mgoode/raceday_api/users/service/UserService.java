@@ -39,6 +39,11 @@ public class UserService implements UserDetailsService {
 		var bCryptEncoder = new BCryptPasswordEncoder();
 		user.setPassword(bCryptEncoder.encode(user.getPassword()));
 		user.setDateCreated(LocalDateTime.now());
+		
+		if (userRepository.findByUserName(user.getUserName()) != null) {
+			throw new Exception("User name already exists");
+		}
+		
 		try {
 			return userRepository.save(user).getId();
 		} catch (Exception ex) {

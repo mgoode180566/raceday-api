@@ -55,7 +55,7 @@ public class UserController {
 			return ResponseEntity.badRequest().body(errorsMap);
 		}
 		try {
-			UUID id =userService.registerUser(user);
+			UUID id = userService.registerUser(user);
 		} catch (Exception ex) {
 			var errorsMap = new HashMap<String,String>();
 			errorsMap.put("error saving user to db", ex.getMessage());
