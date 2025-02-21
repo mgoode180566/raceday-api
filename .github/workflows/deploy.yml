@@ -54,6 +54,7 @@ jobs:
           --source-bundle S3Bucket="racedays-api",S3Key="deploy.zip" \
           --region us-east-1
           
+          
           # Update the environment to use the newly created version
           aws elasticbeanstalk update-environment \
           --application-name racedays-api \
