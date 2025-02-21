@@ -43,6 +43,11 @@ public class UserController {
 		this.authenticationManager = authenticationManager;
 	}
 	
+	@GetMapping("/home")
+	public String home() {
+		return "Im at home!";
+	}
+	
 	@PostMapping("/register")
 	public ResponseEntity<Object> registerUser(@RequestBody User user, BindingResult result) {
 		if (result.hasErrors()) {

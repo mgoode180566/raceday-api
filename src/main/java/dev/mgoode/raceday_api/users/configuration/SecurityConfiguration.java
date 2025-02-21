@@ -32,6 +32,7 @@ public class SecurityConfiguration {
 						.authorizeHttpRequests(auth -> auth
 						.requestMatchers("/users/register").permitAll()
 						.requestMatchers("/users/login").permitAll()
+						.requestMatchers("/users/home").permitAll()
 						.anyRequest().authenticated()
 					)
 					.oauth2ResourceServer(oauth2 -> oauth2.jwt(Customizer.withDefaults()))
