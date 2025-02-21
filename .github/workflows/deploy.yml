@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'  # You chose 'corretto', so we keep this
-          java-version: '17'
+          java-version: '23'
 
       # Step 3: Build with Maven
       - name: Build with Maven
@@ -45,19 +45,19 @@ jobs:
           zip -r deploy.zip application.jar
           
           # Upload application version to Elastic Beanstalk S3 bucket
-          aws s3 cp deploy.zip s3://racedays-api/deploy.zip
+          aws s3 cp deploy.zip s3://raceday-api/deploy.zip
           
           # Create a new Elastic Beanstalk application version
           aws elasticbeanstalk create-application-version \
-          --application-name racedays-api \
+          --application-name raceday-api \
           --version-label v${{ github.run_number }} \
-          --source-bundle S3Bucket="racedays-api",S3Key="deploy.zip" \
+          --source-bundle S3Bucket="raceday-api",S3Key="deploy.zip" \
           --region us-east-1
           
           
           # Update the environment to use the newly created version
           aws elasticbeanstalk update-environment \
-          --application-name racedays-api \
-          --environment-name racedays-api-env \
+          --application-name raceday-api \
+          --environment-name raceday-api-env \
           --version-label v${{ github.run_number }} \
           --region us-east-1
