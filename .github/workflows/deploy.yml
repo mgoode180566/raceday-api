@@ -58,6 +58,6 @@ jobs:
           # Update the environment to use the newly created version
           aws elasticbeanstalk update-environment \
           --application-name raceday-api \
-          --environment-name raceday-api-env \
+          --environment-name raceday-api-env-1 \
           --version-label v${{ github.run_number }} \
           --region us-east-1
