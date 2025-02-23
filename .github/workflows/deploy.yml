@@ -19,7 +19,7 @@ jobs:
         uses: actions/setup-java@v3
         with:
           distribution: 'corretto'  # You chose 'corretto', so we keep this
-          java-version: '23'
+          java-version: '17'
 
       # Step 3: Build with Maven
       - name: Build with Maven
