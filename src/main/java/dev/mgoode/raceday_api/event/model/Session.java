@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
-@Table(name = "session")
+//@Entity
+//@Table(name = "session")
 public class Session {
 	
 	Id id;
